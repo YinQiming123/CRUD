@@ -9,3 +9,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/com/tomorrow/mapper/xml/*.xml
   type-aliases-package: com.tomorrow.pojo
+server:
+  port: 8080
+  servlet:
+    context-path: /tomorrow

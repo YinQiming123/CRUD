@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{css/layui.css}">
+    <title>首页</title>
+</head>
+<body>
+<table id="myTable" lay-filter="myTable"></table>
+
+
+<script type="text/html" id="header">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add">
+            <i class="layui-icon layui-icon-addition"> 添加用户</i>
+        </button>
+    </div>
+</script>
+
+<script type="text/html" id="row">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="imgTmp">
+    {{# console.log(d) }}
+</script>
+
+<script th:src="@{layui.js}"></script>
+<script th:replace="~{fragment::ctx}"/>
+<script>
+    layui.use(['table','layer'],function () {
+        var table = layui.table,
+            layer = layui.layer
+
+        // layer.msg(ctx);/* /tomorrow/ */
+
+        table.render({
+            elem:'#myTable',
+            method:'post',
+            url:ctx + '/userlist',
+            page:true,
+            toolbar:'#header',
+            parseData: function (response) {
+                return {
+                    "code": response.code == 200 ? 0 : 200,
+                    "msg": response.message,
+                    "data": response.data.list,
+                    "count": response.data.count
+                }
+            },
+            cols: [
+                [
+                    //序号
+                    { field: "num", type: "numbers"},
+                    { field: "checkbox", type: "checkbox" },
+                    //字段
+                    { field: "img", title: '用户头像',align:"center",templet:"#imgTmp"},
+                    { field: "name", title: "姓名",align:"center"},
+                    { field: "age", title: "年龄",align:"center"},
+                    { field: "gender", title: "性别",align:"center",templet: function (d) {
+                            console.log(d)
+                        }},
+                    { field: "phone", title: "手机" ,align:"center"},
+                    { field: "clazz", title: "班级名称",align:"center"},
+                    { field: "address", title: "地址",align:"center"},
+                    { field: "操作", title: "操作",width:200,align:"center",fixed:"right",toolbar: "#row"}
+                ]
+            ]
+        })
+
+        table.on('toolbar(myTable)',function (obj) {
+            if(obj.event == "add"){
+                layer.open({
+                    type: 2,
+                    title: "添加用户信息",
+                    area: ['60%', '70%'],
+                    content: ctx + "addUser"
+                })
+            }
+        })
+    })
+</script>
+</body>
+</html>

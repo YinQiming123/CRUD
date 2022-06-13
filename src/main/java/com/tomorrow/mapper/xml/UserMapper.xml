@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tomorrow.mapper.UserMapper">
-
+    <resultMap id="userListResultMap" type="User">
+        <id property="userId" column="user_id"></id>
+        <result property="name" column="name"></result>
+        <result property="age" column="age"></result>
+        <result property="gender" column="gender"></result>
+        <result property="email" column="email"></result>
+        <result property="img" column="img"></result>
+        <result property="status" column="status"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="isDeleted" column="is_deleted"></result>
+        <association property="clazz" select="com.tomorrow.mapper.ClassMapper.getClassInfoById" column="class_id"></association>
+        <association property="address" select="com.tomorrow.mapper.AddressMapper.getAddressInfoById" column="address_id"></association>
+    </resultMap>
+<!--    List<User> getUserListInfo(Page<User>page);-->
+    <select id="getUserListInfo" resultMap="userListResultMap">
+        select user_id, name, age, gender, phone, email, img, class_id, address_id, status, create_time, update_time, is_deleted
+        from crud.user
+        where is_deleted = 0
+    </select>
+<!--    Long getUserCount();-->
+    <select id="getUserCount" resultType="java.lang.Long">
+        select count(1)
+        from crud.user
+        where is_deleted = 0
+    </select>
 </mapper>

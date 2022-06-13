@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+    <title>Title</title>
+    <style>
+        .layui-form {
+            padding: 14px 20px;
+        }
+    </style>
+</head>
+<body>
+<form class="layui-form">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="color: #cccccc">基本信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" autocomplete="off"  lay-verify="required|name" lay-reqText="请输入姓名" type="text" name="name" placeholder="请输入姓名">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="imgBtn">上传头像</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" style="width: 92px; height: 92px;margin-left: 110px" id="img">
+                <p id="imgText"></p>
+            </div>
+            <div style="width: 95px; margin-left: 110px">
+                <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="progress">
+                    <div class="layui-progress-bar" lay-percent=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">年龄</label>
+        <div class="layui-input-block">
+            <input class="layui-input" autocomplete="off" lay-verify="required|number" lay-reqText="请输入年龄" type="text" name="age" placeholder="请输入年龄">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="gender" value="0" title="女" checked>
+            <input type="radio" name="gender" value="1" title="男">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+            <input class="layui-input" autocomplete="off" lay-verify="required|phone" lay-reqText="请输入手机号" type="text" name="phone" placeholder="请输入手机号">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input class="layui-input" autocomplete="off" lay-verify="required|email" lay-reqText="请输入邮箱" type="text" name="email" placeholder="请输入邮箱">
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="color: #cccccc">班级信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级名称</label>
+        <div class="layui-input-block">
+            <select name="className" lay-verify="required" lay-reqText="请选择班级">
+                <option value="">请选择班级</option>
+                <option value="软件工程1班">软件工程1班</option>
+                <option value="软件工程2班">软件工程2班</option>
+                <option value="软件工程3班">软件工程3班</option>
+                <option value="软件工程4班">软件工程4班</option>
+            </select>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="color: #cccccc">地址信息</legend>
+    </fieldset>
+    <div class="layui-form-item" id="area-picker">
+        <div class="layui-form-label">省市区</div>
+        <div class="layui-input-inline" style="width: 110px;" >
+            <select name="province" class="province-selector" lay-filter="province-0" lay-verify="required" lay-reqText="请选择省">
+                <option value="">请选择省</option>
+            </select>
+        </div>
+        <div class="layui-input-inline" style="width: 110px;" >
+            <select name="city" class="city-selector" lay-filter="city-0" lay-verify="required" lay-reqText="请选择市">
+                <option value="">请选择市</option>
+            </select>
+        </div>
+        <div class="layui-input-inline" style="width: 110px;" >
+            <select name="district" class="county-selector" lay-filter="county-0" lay-verify="required" lay-reqText="请选择区">
+                <option value="">请选择区</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">详细地址</label>
+        <div class="layui-input-block">
+            <textarea name="detail" placeholder="请输入详细地址" class="layui-textarea" lay-verify="required" lay-reqText="请输入详细地址"></textarea>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend></legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <div class="layui-btn-container">
+                <button type="button" lay-submit lay-filter="add" class="layui-btn">添 加</button>
+                <button type="reset"  class="layui-btn layui-btn-primary">重 置</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script th:src="@{layui.js}"></script>
+<script th:replace="~{fragment::ctx}"/>
+<script>
+    layui.config({
+        base: './mods/'
+    });
+    layui.use(['form','upload','element','layer','layarea'], function() {
+        var $ = layui.jquery
+            , upload = layui.upload
+            , element = layui.element
+            , layer = layui.layer
+            , form = layui.form
+            , layarea = layui.layarea;
+
+        form.verify({
+            name:[
+                /^[\u4e00-\u9fa5]{2,6}$/
+                ,'请输入正确的姓名'
+            ]
+        })
+
+        //常规使用 - 普通图片上传
+        var imgUpload = upload.render({
+            elem: '#imgBtn'
+            , url: 'https://httpbin.org/post' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#img').attr('src', result); //图片链接（base64）
+                });
+
+                element.progress('progress', '0%'); //进度条复位
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功的一些操作
+                //……
+                $('#imgText').html(''); //置空上传失败的状态
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var imgText = $('#imgText');
+                imgText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs img-reload">重试</a>');
+                imgText.find('.img-reload').on('click', function () {
+                    imgUpload.upload();
+                });
+            }
+            //进度条
+            , progress: function (n, elem, e) {
+                element.progress('progress', n + '%'); //可配合 layui 进度条元素使用
+                if (n == 100) {
+                    layer.msg('上传完毕', {icon: 1});
+                }
+            }
+        });
+
+        layarea.render({
+            elem: '#area-picker',
+            change: function (res) {
+                //选择结果
+                console.log(res);
+            }
+        });
+
+        form.on("submit(add)",function (data) {
+            $.post("/addUser", data.field,function (response) {
+                if(response.code == 200){
+                    layer.msg(response.message,{icon:1,time:1000},function () {
+                        // var index = parent.layer.getFrameIndex(window.name);
+                        // parent.layer.close(index);
+                        // parent.refreshTable();
+                    })
+
+                }else if(response.code == 400){
+                    layer.msg(response.message,{icon:2,anim:6})
+                }
+            })
+            return false;
+        })
+
+    })
+</script>
+</body>
+</html>

@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -19,6 +22,8 @@ import lombok.EqualsAndHashCode;
  * @since 2022-06-12
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User implements Serializable {
 
@@ -63,12 +68,12 @@ public class User implements Serializable {
     /**
      * 班级编号
      */
-    private Integer classId;
+    private Class clazz;
 
     /**
      * 地址编号
      */
-    private Integer addressId;
+    private Address address;
 
     /**
      * 状态
